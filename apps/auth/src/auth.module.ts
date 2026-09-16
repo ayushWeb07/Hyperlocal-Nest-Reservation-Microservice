@@ -5,6 +5,8 @@ import { UsersModule } from './users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
+import { LocalStrategy } from './strategies/local.strategy';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
@@ -17,8 +19,6 @@ import * as Joi from 'joi';
         JWT_EXPIRES_IN: Joi.number().required(),
       }),
     }),
-
-    UsersModule,
     JwtModule.registerAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
@@ -30,8 +30,11 @@ import * as Joi from 'joi';
         };
       },
     }),
+
+    UsersModule,
+    PassportModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, LocalStrategy],
 })
 export class AuthModule {}
