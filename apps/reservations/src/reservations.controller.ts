@@ -9,7 +9,7 @@ import {
   HttpStatus,
   HttpCode,
 } from '@nestjs/common';
-import { ReservationsService } from './reservations.service';
+import { ReservationsService } from './services/reservations.service';
 import { CreateReservationDto } from './dto/create-reservation.dto';
 import { UpdateReservationBodyDto } from './dto/update-reservation-body.dto';
 import { ReservationDocument } from './schemas/reservation.schema';

@@ -11,9 +11,12 @@ services:
       - "3000:3000"
     volumes:
       - .:/usr/src/app
+      - /usr/src/app/node_modules
 
     container_name: hyperlocal-nest-reservations-service
     restart: unless-stopped
+    depends_on:
+      - mongo
 
   mongo:
     image: mongo

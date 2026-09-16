@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { CreateReservationDto } from './dto/create-reservation.dto';
-import { UpdateReservationBodyDto } from './dto/update-reservation-body.dto';
-import { ReservationsRepository } from './reservations.repository';
-import { ReservationDocument } from './schemas/reservation.schema';
+import { CreateReservationDto } from '../dto/create-reservation.dto';
+import { UpdateReservationBodyDto } from '../dto/update-reservation-body.dto';
+import { ReservationsRepository } from '../repositories/reservations.repository';
+import { ReservationDocument } from '../schemas/reservation.schema';
 
 @Injectable()
 export class ReservationsService {
