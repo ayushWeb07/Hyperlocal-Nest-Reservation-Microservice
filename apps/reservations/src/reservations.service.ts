@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateReservationDto } from './dto/create-reservation.dto';
-import { UpdateReservationDto } from './dto/update-reservation.dto';
+import { UpdateReservationBodyDto } from './dto/update-reservation-body.dto';
 import { ReservationsRepository } from './reservations.repository';
+import { ReservationDocument } from './schemas/reservation.schema';
 
 @Injectable()
 export class ReservationsService {
@@ -9,23 +10,71 @@ export class ReservationsService {
     private readonly reservationsRepository: ReservationsRepository,
   ) {}
 
-  create(createReservationDto: CreateReservationDto) {
-    return 'This action adds a new reservation';
+  async create(
+    createReservationDto: CreateReservationDto,
+  ): Promise<ReservationDocument> {
+    // call the create repository function
+    const doc: ReservationDocument =
+      await this.reservationsRepository.create(createReservationDto);
+    return doc;
   }
 
-  findAll() {
-    return `This action returns all reservations`;
+  async findAll() {
+    // call the find all repository function
+    const docs: ReservationDocument[] =
+      await this.reservationsRepository.findMany();
+    return docs;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} reservation`;
+  async findById(id: string): Promise<ReservationDocument> {
+    // call the find by id repository function
+    const doc: ReservationDocument | null =
+      await this.reservationsRepository.findById(id);
+
+    if (!doc) {
+      throw new NotFoundException(
+        `Reservation with id '${id}' does not exist or got deleted`,
+      );
+    }
+
+    return doc;
   }
 
-  update(id: number, updateReservationDto: UpdateReservationDto) {
-    return `This action updates a #${id} reservation`;
+  async update(
+    id: string,
+    updateReservationDto: UpdateReservationBodyDto,
+  ): Promise<ReservationDocument> {
+    // call the findOneAndUpdate repository function
+    const doc: ReservationDocument | null =
+      await this.reservationsRepository.findOneAndUpdate(
+        {
+          _id: id,
+        },
+        {
+          $set: updateReservationDto,
+        },
+      );
+
+    if (!doc) {
+      throw new NotFoundException(
+        `Reservation with id '${id}' does not exist or got deleted`,
+      );
+    }
+
+    return doc;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} reservation`;
+  async remove(id: string): Promise<ReservationDocument> {
+    // call the findOneAndDelete repository function
+    const doc: ReservationDocument | null =
+      await this.reservationsRepository.findOneAndDelete({
+        _id: id,
+      });
+
+    if (!doc) {
+      throw new NotFoundException(`Reservation with id '${id}' does not exist`);
+    }
+
+    return doc;
   }
 }
