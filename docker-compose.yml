@@ -13,6 +13,9 @@ services:
       - .:/usr/src/app
       - /usr/src/app/node_modules
 
+    env_file:
+      - ./apps/reservations/.env
+
     container_name: hyperlocal-nest-reservations-service
     restart: unless-stopped
     depends_on:
@@ -31,6 +34,9 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+
+    env_file:
+      - ./apps/auth/.env
 
     container_name: hyperlocal-nest-auth-service
     restart: unless-stopped
