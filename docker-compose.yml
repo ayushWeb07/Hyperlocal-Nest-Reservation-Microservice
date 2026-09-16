@@ -1,0 +1,28 @@
+services:
+  reservations-service:
+    build:
+      context: .
+      dockerfile: ./apps/reservations/Dockerfile
+      target: development
+
+    command: pnpm run start:dev reservations
+
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app
+
+    container_name: hyperlocal-nest-reservations-service
+    restart: unless-stopped
+
+  mongo:
+    image: mongo
+    container_name: hyperlocal-nest-mongo
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
