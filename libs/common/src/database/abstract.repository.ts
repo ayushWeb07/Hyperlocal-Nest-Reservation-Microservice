@@ -6,7 +6,8 @@ export abstract class AbstractRepository<TSchema extends AbstractSchema> {
 
   async create(data: Omit<TSchema, '_id'>): Promise<TSchema> {
     const newDoc = new this.model({ ...data, _id: new Types.ObjectId() });
-    return await newDoc.save();
+    const savedDoc = await newDoc.save();
+    return savedDoc.toJSON() as unknown as TSchema;
   }
 
   async findMany(filter: QueryFilter<TSchema> = {}): Promise<TSchema[]> {

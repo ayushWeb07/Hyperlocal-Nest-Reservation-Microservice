@@ -45,13 +45,13 @@ export class ReservationsController {
     return {
       success: true,
       message: `Successfully fetched all the reservations`,
-      data: { ...existingReservations },
+      data: existingReservations,
     };
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  async findById(@Param('id') findByIdReservationDto: FindByIdReservationDto) {
+  async findById(@Param() findByIdReservationDto: FindByIdReservationDto) {
     // call the find by id service function
     const existingReservation: ReservationDocument =
       await this.reservationsService.findById(findByIdReservationDto.id);
@@ -66,7 +66,7 @@ export class ReservationsController {
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
   async update(
-    @Param('id') updateReservationParamsDto: UpdateReservationParamsDto,
+    @Param() updateReservationParamsDto: UpdateReservationParamsDto,
     @Body() updateReservationBodyDto: UpdateReservationBodyDto,
   ) {
     // call the update service function
@@ -85,7 +85,7 @@ export class ReservationsController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.OK)
-  async remove(@Param('id') removeReservationDto: RemoveReservationDto) {
+  async remove(@Param() removeReservationDto: RemoveReservationDto) {
     // call the remove service function
     const removedReservation: ReservationDocument =
       await this.reservationsService.remove(removeReservationDto.id);
